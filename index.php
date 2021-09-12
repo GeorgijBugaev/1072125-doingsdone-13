@@ -1,7 +1,55 @@
 <?php
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
+
+$projects = [
+    'Входящие',
+    'Учеба',
+    'Работа',
+    'Домашние дела',
+    'Авто',
+];
+
+$tasks = [
+    [
+        'task' => 'Собеседование в IT компании',
+        'date' => '01.12.2019',
+        'category' => 'Работа',
+        'completed' => false,
+    ],
+    [
+        'task' => 'Выполнить тестовое задание',
+        'date' => '25.12.2019',
+        'category' => 'Работа',
+        'completed' => false,
+    ],
+    [
+        'task' => 'Сделать задание первого раздела',
+        'date' => '25.12.2019',
+        'category' => 'Учеба',
+        'completed' => true,
+    ],
+    [
+        'task' => 'Встреча с другом',
+        'date' => '22.12.2019',
+        'category' => 'Входящие',
+        'completed' => false,
+    ],
+    [
+        'task' => 'Купить корм для кота',
+        'date' => null,
+        'category' => 'Домашние дела',
+        'completed' => false,
+    ],
+    [
+        'task' => 'Заказать пиццу',
+        'date' => null,
+        'category' => 'Домашние дела',
+        'completed' => false,
+    ],
+];
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -42,10 +90,12 @@ $show_complete_tasks = rand(0, 1);
 
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
-                        <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#">Название проекта</a>
-                            <span class="main-navigation__list-item-count">0</span>
-                        </li>
+                        <?php foreach ($projects as $project): ?>
+                            <li class="main-navigation__list-item">
+                                <a class="main-navigation__list-item-link" href="#"><?= $project ?></a>
+                                <span class="main-navigation__list-item-count">0</span>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
                 </nav>
 
@@ -78,21 +128,23 @@ $show_complete_tasks = rand(0, 1);
                 </div>
 
                 <table class="tasks">
-                    <tr class="tasks__item task">
-                        <td class="task__select">
-                            <label class="checkbox task__checkbox">
-                                <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                <span class="checkbox__text">Сделать главную страницу Дела в порядке</span>
-                            </label>
-                        </td>
+                    <?php foreach ($tasks as $task): ?>
+                        <?php if ($show_complete_tasks === 0 && $task['completed'] === true) { continue; } ?>
+                        <tr class="tasks__item task <?php if ($task['completed'] === true): ?>task--completed<?php endif; ?>">
+                            <td class="task__select">
+                                <label class="checkbox task__checkbox">
+                                    <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
+                                    <span class="checkbox__text"><?= $task['task']; ?></span>
+                                </label>
+                            </td>
 
-                        <td class="task__file">
-                            <a class="download-link" href="#">Home.psd</a>
-                        </td>
+                            <td class="task__file">
+                                <a class="download-link" href="#">Home.psd</a>
+                            </td>
 
-                        <td class="task__date"></td>
-                    </tr>
-                    <!--показывать следующий тег <tr/>, если переменная $show_complete_tasks равна единице-->
+                            <td class="task__date"><?= $task['date']; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </table>
             </main>
         </div>
